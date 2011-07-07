@@ -1,5 +1,7 @@
 use Test::More tests => 1;
 
+## TODO: Add more comprehensive tests
+
 BEGIN {
 use_ok( 'File::chmod::Recursive' );
 }
