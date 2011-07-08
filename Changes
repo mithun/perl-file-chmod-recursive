@@ -1,3 +1,7 @@
 Revision history for File-chmod-Recursive
 
-0.01  Initial release.
+0.02    - Removed Check for regex ref (That should teach me to write tests)
+        - Return scalar value instead of a list, similar to chmod
+        - Updated _chmod_ links to point to perldoc
+
+0.01    Initial release.

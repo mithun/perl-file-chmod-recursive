@@ -3,7 +3,7 @@ package File::chmod::Recursive;
 #######################
 # VERSION
 #######################
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 #######################
 # LOAD MODULES
@@ -50,12 +50,8 @@ sub chmod_recursive {
         if ( $in[0]->{match} ) {
             croak "Hash ref expected for _match_"
                 unless ( ref $in[0]->{match} eq 'HASH' );
-            foreach ( keys %{ $in[0]->{match} } ) {
-                croak "$_ is not a compiled regex"
-                    unless ( ref $_ eq 'Regexp' );
-            }
             $mode->{match} = $in[0]->{match};
-        } ## end if ( $in[0]->{match} )
+        }
     } ## end if ( ref $in[0] eq 'HASH')
     else {
 ## Usage chmod_recursive($mode, $dir);
@@ -145,7 +141,7 @@ sub chmod_recursive {
     }
 
     # Done
-    return @updated;
+    return scalar @updated;
 } ## end sub chmod_recursive
 
 #######################
@@ -199,7 +195,8 @@ Run chmod recursively against directories
 
 This function accepts two parameters. The first is either a I<MODE> or an
 I<options hashref>. The second is the directory to work on. It returns the
-number of files successfully changes, similar to L<chmod>.
+number of files successfully changed, similar to
+L<chmod|http://perldoc.perl.org/functions/chmod.html>.
 
 When using a I<hashref> for selective permissions, the following options are
 valid -
@@ -229,7 +226,7 @@ L<http://rt.cpan.org>.
 
 -   L<File::chmod>
 
--   L<chmod>
+-   L<chmod|http://perldoc.perl.org/functions/chmod.html>
 
 -   L<Perl Monks thread on recursive perl
 chmod|http://www.perlmonks.org/?node_id=61745>

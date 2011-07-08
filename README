@@ -31,7 +31,7 @@ FUNCTIONS
     chmod_recursive(\%options, $path)
         This function accepts two parameters. The first is either a *MODE*
         or an *options hashref*. The second is the directory to work on. It
-        returns the number of files successfully changes, similar to chmod.
+        returns the number of files successfully changed, similar to chmod.
 
         When using a *hashref* for selective permissions, the following
         options are valid -

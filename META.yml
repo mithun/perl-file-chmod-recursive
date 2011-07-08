@@ -16,12 +16,12 @@ name: File-chmod-Recursive
 provides:
   File::chmod::Recursive:
     file: lib/File/chmod/Recursive.pm
-    version: 0.01
+    version: 0.02
 requires:
   File::chmod: 0.32
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.01
+version: 0.02
 x_repository:
   type: git
   url: git://github.com/mithun/perl-file-chmod-recursive.git
