@@ -1,11 +1,6 @@
 package File::chmod::Recursive;
 
 #######################
-# VERSION
-#######################
-our $VERSION = '0.02';
-
-#######################
 # LOAD MODULES
 #######################
 use strict;
@@ -14,6 +9,11 @@ use Carp qw(croak carp);
 use Cwd qw(abs_path);
 use File::Find qw(finddepth);
 use File::chmod qw(chmod);
+
+#######################
+# VERSION
+#######################
+our $VERSION = '0.02';
 
 #######################
 # EXPORT
@@ -31,30 +31,69 @@ sub chmod_recursive {
     # Read Input
     my @in = @_;
 
-    # Check Input
+    # Default mode
     my $mode = {
-        files => q(),
-        dirs  => q(),
-        match => {},
+        files       => q(),
+        dirs        => q(),
+        match_dirs  => {},
+        match_files => {},
     };
+
+    # Default _find_ settings
+    my %find_settings = (
+        follow   => 0,  # Do not Follow symlinks
+        no_chdir => 1,  # Do not chdir
+    );
+
+    # Check Input
     my $dir;
     if ( ref $in[0] eq 'HASH' ) {
-## Usage chmod_recursive({}, $dir);
+
+        # Usage chmod_recursive({}, $dir);
 
         # Both files and Directories are required
-        $mode->{files} = $in[0]->{files} || croak "File mode is not provided";
-        $mode->{dirs} = $in[0]->{dirs}
-            || croak "Directory mode is not provided";
+        $mode->{files} = $in[0]->{files} || q();
+        $mode->{dirs}  = $in[0]->{dirs}  || q();
 
         # Check for match
         if ( $in[0]->{match} ) {
             croak "Hash ref expected for _match_"
                 unless ( ref $in[0]->{match} eq 'HASH' );
-            $mode->{match} = $in[0]->{match};
+            $mode->{match_dirs} =
+                { %{ $mode->{match_dirs} }, $in[0]->{match} };
+            $mode->{match_files} =
+                { %{ $mode->{match_files} }, $in[0]->{match} };
+        } ## end if ( $in[0]->{match} )
+
+        # Check for match files
+        if ( $in[0]->{match_files} ) {
+            croak "Hash ref expected for _match_files_"
+                unless ( ref $in[0]->{match_files} eq 'HASH' );
+            $mode->{match_files} =
+                { %{ $mode->{match_files} }, $in[0]->{match} };
+        } ## end if ( $in[0]->{match_files...})
+
+        # Check for match dirs
+        if ( $in[0]->{match_dirs} ) {
+            croak "Hash ref expected for _match_dirs_"
+                unless ( ref $in[0]->{match_dirs} eq 'HASH' );
+            $mode->{match_dirs} =
+                { %{ $mode->{match_dirs} }, $in[0]->{match} };
+        } ## end if ( $in[0]->{match_dirs...})
+
+        # Check for _find_ settings
+        if ( $in[0]->{follow_symlinks} ) {
+            $find_settings{follow}      = 1;  # Follow Symlinks
+            $find_settings{follow_skip} = 2;  # Skip duplicates
+        }
+        if ( $in[0]->{depth_first} ) {
+            $find_settings{bydepth} = 1;
         }
     } ## end if ( ref $in[0] eq 'HASH')
+
     else {
-## Usage chmod_recursive($mode, $dir);
+
+        # Usage chmod_recursive($mode, $dir);
 
         # Set modes
         $mode->{files} = $in[0];
@@ -70,69 +109,100 @@ sub chmod_recursive {
     croak "$dir is not a directory" unless -d $dir;
 
     # Run chmod
-    #   This uses _finddepth_
-    #   which works from the bottom of the directory tree up
     my @updated;
     {
 
         # Turn off warnings for file find
         no warnings 'File::Find';
-        finddepth(
+        find(
             {
-                follow => 1,  # Follow symlinks
-                follow_skip =>
-                    2,        # But ignore duplicates and continue processing
-                no_chdir => 1,    # Do not chdir
-                wanted   => sub {
+                %find_settings,
+                wanted => sub {
 
                     # The main stuff
 
                     # Get full path
                     my $path = $File::Find::name;
 
-                    # Check for symlinks
-                    if ( -l $path ) {
-                        $path = $File::Find::fullname;
-                    }
-
-                    if ( -e $path ) {  # Skip dangling symlinks
-
-                        # Process match
-                        my $isa_match = 0;
-                        foreach my $match_re ( keys %{ $mode->{match} } ) {
-                            next unless ( $path =~ m{$match_re} );
-                            $isa_match = 1;
-                            if ( chmod( $mode->{match}->{$match_re}, $path ) )
-                            {
-                                push @updated, $path;
-                            }
-                        } ## end foreach my $match_re ( keys...)
+                    if ( not -l $path ) { # Do not set permissions on symlinks
 
                         # Process files
-                        if (
-                            ( not $isa_match )  # Not a match
-                            and ( -f $path )    # Is a file
-                            and (
-                                chmod( $mode->{files}, $path )
-                            )                   # Successfuly changed mode
-                            )
-                        {
-                            push @updated, $path;
-                        } ## end if ( ( not $isa_match ...))
+                        if ( -f $path ) {
 
-                        # Process dirs
-                        if (
-                            ( not $isa_match )  # Not a match
-                            and ( -d $path )    # Is a directory
-                            and (
-                                chmod( $mode->{dirs}, $path )
-                            )                   # Successfuly changed mode
-                            )
-                        {
-                            push @updated, $path;
-                        } ## end if ( ( not $isa_match ...))
+                            # Process Matches
+                            my $file_isa_match = 0;
+                            foreach my $match_re (
+                                keys %{ $mode->{match_files} } )
+                            {
+                                next unless ( $path =~ m{$match_re} );
+                                $file_isa_match = 1;
+                                if (
+                                    chmod(
+                                        $mode->{match_files}->{$match_re},
+                                        $path
+                                    )
+                                    )
+                                {
+                                    push @updated, $path;
+                                } ## end if ( chmod( $mode->{match_files...}))
+                            } ## end foreach my $match_re ( keys...)
 
-                    } ## end if ( -e $path )
+                            # Process non-matches
+                            if (
+
+                                # Skip processed
+                                ( not $file_isa_match )
+
+                                # And we're updating files
+                                and ( $mode->{files} )
+
+                                # And succesfully updated
+                                and ( chmod( $mode->{files}, $path ) )
+                                )
+                            {
+                                push @updated, $path;
+                            } ## end if ( ( not $file_isa_match...))
+                        } ## end if ( -f $path )
+
+                        # Process Dirs
+                        elsif ( -d $path ) {
+
+                            # Process Matches
+                            my $dir_isa_match = 0;
+                            foreach
+                                my $match_re ( keys %{ $mode->{match_dirs} } )
+                            {
+                                next unless ( $path =~ m{$match_re} );
+                                $dir_isa_match = 1;
+                                if (
+                                    chmod(
+                                        $mode->{match_dirs}->{$match_re},
+                                        $path
+                                    )
+                                    )
+                                {
+                                    push @updated, $path;
+                                } ## end if ( chmod( $mode->{match_dirs...}))
+                            } ## end foreach my $match_re ( keys...)
+
+                            # Process non-matches
+                            if (
+
+                                # Skip processed
+                                ( not $dir_isa_match )
+
+                                # And we're updating files
+                                and ( $mode->{dirs} )
+
+                                # And succesfully updated
+                                and ( chmod( $mode->{dirs}, $path ) )
+                                )
+                            {
+                                push @updated, $path;
+                            } ## end if ( ( not $dir_isa_match...))
+                        } ## end elsif ( -d $path )
+
+                    } ## end if ( not -l $path )
 
                 },
             },
@@ -164,26 +234,30 @@ Run chmod recursively against directories
 
 =head1 SYNOPSIS
 
-    use File::chmod::Recursive;  # Exports 'chmod_recursive' by default
+	use File::chmod::Recursive;  # Exports 'chmod_recursive' by default
 
-    # Apply identical permissions to everything
-    #   Similar to chmod -R
-    chmod_recursive( 0755, '/path/to/directory' );
+	# Apply identical permissions to everything
+	#   Similar to chmod -R
+	chmod_recursive( 0755, '/path/to/directory' );
 
-    # Apply permissions selectively
-    chmod_recursive(
-        {
-            dirs  => 0755,       # Mode for directories
-            files => 0644,       # Mode for files
-            match => {
-                qr/\.sh|\.pl/ => 0755,  # Mode for executables
-                qr/\.key/     => 0600,  # Secure files
+	# Apply permissions selectively
+	chmod_recursive(
+	    {
+	        dirs  => 0755,       # Mode for directories
+	        files => 0644,       # Mode for files
 
-                # Note: Matching applies to both directories and files
-            },
-        },
-        '/path/to/directory'
-    );
+	        # Match both directories and files
+	        match => {
+	            qr/\.sh|\.pl/ => 0755,
+	            qr/\.gnupg/   => 0600,
+	        },
+
+	        # You can also match files or directories selectively
+	        match_dirs  => { qr/\/logs\//    => 0775, },
+	        match_files => { qr/\/bin\/\S+$/ => 0755, },
+	    },
+	    '/path/to/directory'
+	);
 
 =head1 FUNCTIONS
 
@@ -201,14 +275,25 @@ L<chmod|http://perldoc.perl.org/functions/chmod.html>.
 When using a I<hashref> for selective permissions, the following options are
 valid -
 
-    {
-        dirs  => MODE,       # Required. Mode for directories
-        files => MODE,       # Required. Mode for files
-        match => {           # Optional.
-            qr/<some condition>/ => MODE,
-        # Note: Matching applies to both directories and files
-        },
-    }
+	{
+	    dirs  => MODE,  # Default Mode for directories
+	    files => MODE,  # Default Mode for files
+
+	    # Match both directories and files
+	    match => { qr/<some condition>/ => MODE, },
+
+	    # Match files only
+	    match_files => { qr/<some condition>/ => MODE, },
+
+	    # Match directories only
+	    match_dirs => { qr/<some condition>/ => MODE, },
+
+	    # Follow symlinks. OFF by default
+	    follow_symlinks => 0,
+
+	    # Depth first tree walking. ON by default (default _find_ behavior)
+	    depth_first => 1,
+	}
     
 In all cases the I<MODE> is whatever L<File::chmod> accepts.
 
