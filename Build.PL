@@ -23,9 +23,7 @@ my $builder = Module::Build->new(
         'Test::More' => 0,
         'version'    => 0,
     },
-    requires => {
-
-    },
+    requires           => { 'File::chmod' => 0, },
     add_to_cleanup     => ['File-chmod-Recursive-*'],
     create_license     => 1,
     create_makefile_pl => 'traditional',
