@@ -1,95 +1,107 @@
+* * * * *
+
 NAME
-    File::chmod::Recursive
+====
+
+File::chmod::Recursive
 
 DESCRIPTION
-    Run chmod recursively against directories
+===========
+
+Run chmod recursively against directories
 
 SYNOPSIS
-        use File::chmod::Recursive;  # Exports 'chmod_recursive' by default
+========
 
-        # Apply identical permissions to everything
-        #   Similar to chmod -R
-        chmod_recursive( 0755, '/path/to/directory' );
+    use File::chmod::Recursive;  # Exports 'chmod_recursive' by default
 
-        # Apply permissions selectively
-        chmod_recursive(
-            {
-                dirs  => 0755,       # Mode for directories
-                files => 0644,       # Mode for files
-                match => {
-                    qr/\.sh|\.pl/ => 0755,  # Mode for executables
-                    qr/\.key/     => 0600,  # Secure files
+    # Apply identical permissions to everything
+    #   Similar to chmod -R
+    chmod_recursive( 0755, '/path/to/directory' );
 
-                    # Note: Matching applies to both directories and files
-                },
+    # Apply permissions selectively
+    chmod_recursive(
+        {
+            dirs  => 0755,       # Mode for directories
+            files => 0644,       # Mode for files
+
+            # Match both directories and files
+            match => {
+                qr/\.sh|\.pl/ => 0755,
+                qr/\.gnupg/   => 0600,
             },
-            '/path/to/directory'
-        );
+
+            # You can also match files or directories selectively
+            match_dirs  => { qr/\/logs\//    => 0775, },
+            match_files => { qr/\/bin\/\S+$/ => 0755, },
+        },
+        '/path/to/directory'
+    );
 
 FUNCTIONS
-    chmod_recursive(MODE, $path)
-    chmod_recursive(\%options, $path)
-        This function accepts two parameters. The first is either a *MODE*
-        or an *options hashref*. The second is the directory to work on. It
-        returns the number of files successfully changed, similar to chmod.
+=========
 
-        When using a *hashref* for selective permissions, the following
-        options are valid -
+-   chmod_recursive(MODE, $path)
+-   chmod_recursive(%options, $path)
 
-            {
-                dirs  => MODE,       # Required. Mode for directories
-                files => MODE,       # Required. Mode for files
-                match => {           # Optional.
-                    qr/<some condition>/ => MODE,
-                # Note: Matching applies to both directories and files
-                },
-            }
-    
-        In all cases the *MODE* is whatever File::chmod accepts.
+This function accepts two parameters. The first is either a MODE or an
+options hashref. The second is the directory to work on. It returns the
+number of files successfully changed, similar to chmod.
+
+When using a hashref for selective permissions, the following options
+are valid -
+
+    {
+        dirs  => MODE,  # Default Mode for directories
+        files => MODE,  # Default Mode for files
+
+        # Match both directories and files
+        match => { qr/<some condition>/ => MODE, },
+
+        # Match files only
+        match_files => { qr/<some condition>/ => MODE, },
+
+        # Match directories only
+        match_dirs => { qr/<some condition>/ => MODE, },
+
+        # Follow symlinks. OFF by default
+        follow_symlinks => 0,
+
+        # Depth first tree walking. ON by default (default _find_ behavior)
+        depth_first => 1,
+    }
+
+In all cases the MODE is whatever File::chmod accepts.
 
 BUGS AND LIMITATIONS
-    No bugs have been reported.
+====================
 
-    Please report any bugs or feature requests to
-    `bug-file-chmod-recursive@rt.cpan.org', or through the web interface at
-    http://rt.cpan.org.
+No bugs have been reported.
+
+Please report any bugs or feature requests to
+bug-file-chmod-recursive@rt.cpan.org, or through the web interface at
+http://rt.cpan.org.
 
 SEE ALSO
-    - File::chmod
+========
 
-    - chmod
+-   File::chmod
 
-    - Perl Monks thread on recursive perl chmod
+-   chmod
+
+-   Perl Monks thread on recursive perl chmod
 
 AUTHOR
-    Mithun Ayachit `<mithun@cpan.org>'
+======
+
+Mithun Ayachit <mithun@cpan.org>
 
 LICENCE AND COPYRIGHT
-    Copyright (c) 2011, Mithun Ayachit `<mithun@cpan.org>'. All rights
-    reserved.
+=====================
 
-    This module is free software; you can redistribute it and/or modify it
-    under the same terms as Perl itself. See perlartistic.
+Copyright (c) 2011, Mithun Ayachit <mithun@cpan.org>. All rights
+reserved.
 
-DISCLAIMER OF WARRANTY
-    BECAUSE THIS SOFTWARE IS LICENSED FREE OF CHARGE, THERE IS NO WARRANTY
-    FOR THE SOFTWARE, TO THE EXTENT PERMITTED BY APPLICABLE LAW. EXCEPT WHEN
-    OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS AND/OR OTHER PARTIES
-    PROVIDE THE SOFTWARE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER
-    EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-    WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE
-    ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE SOFTWARE IS WITH
-    YOU. SHOULD THE SOFTWARE PROVE DEFECTIVE, YOU ASSUME THE COST OF ALL
-    NECESSARY SERVICING, REPAIR, OR CORRECTION.
-
-    IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING
-    WILL ANY COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MAY MODIFY AND/OR
-    REDISTRIBUTE THE SOFTWARE AS PERMITTED BY THE ABOVE LICENCE, BE LIABLE
-    TO YOU FOR DAMAGES, INCLUDING ANY GENERAL, SPECIAL, INCIDENTAL, OR
-    CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE THE
-    SOFTWARE (INCLUDING BUT NOT LIMITED TO LOSS OF DATA OR DATA BEING
-    RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR THIRD PARTIES OR A
-    FAILURE OF THE SOFTWARE TO OPERATE WITH ANY OTHER SOFTWARE), EVEN IF
-    SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH
-    DAMAGES.
-
+This module is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself. See
+perlartistic.-------------------------------------

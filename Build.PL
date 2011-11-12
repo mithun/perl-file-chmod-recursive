@@ -1,26 +1,46 @@
+#!perl
+
+####################
+# LOAD MODULES
+####################
 use strict;
-use warnings;
+use warnings FATAL => 'all';
 use Module::Build;
+
+# Autoflush ON
+local $| = 1;
+
+####################
+# INIT BUILDER
+####################
 
 my $builder = Module::Build->new(
     module_name        => 'File::chmod::Recursive',
     license            => 'perl',
     dist_author        => 'Mithun Ayachit <mithun@cpan.org>',
-    dist_version_from  => 'lib/File/chmod/Recursive.pm',
-    dist_abstract      => 'Run chmod recursively against directories',
-    configure_requires => { 'Module::Build' => 0, },
-    build_requires     => { 'Test::More' => 0, },
-    requires           => { 'File::chmod' => '0.32', },
+    configure_requires => { 'Module::Build' => 0.38 },
+    build_requires     => {
+        'Test::More' => 0,
+        'version'    => 0,
+    },
+    requires => {
+
+    },
     add_to_cleanup     => ['File-chmod-Recursive-*'],
-    create_readme      => 1,
-    meta_add           => {
-        repository => {
-            url  => 'git://github.com/mithun/perl-file-chmod-recursive.git',
-            web  => 'https://github.com/mithun/perl-file-chmod-recursive',
-            type => 'git',
+    create_license     => 1,
+    create_makefile_pl => 'traditional',
+    meta_merge         => {
+        resources => {
+            bugtracker =>
+                'http://rt.cpan.org/Public/Dist/Display.html?Name=File-chmod-Recursive',
+            repository =>
+                'git://github.com/mithun/perl-file-chmod-recursive.git',
+            homepage => 'https://github.com/mithun/perl-file-chmod-recursive',
         },
     },
-
 );
 
+####################
+# CREATE BUILD SCRIPT
+####################
 $builder->create_build_script();

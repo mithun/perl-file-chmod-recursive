@@ -1,7 +1,29 @@
-Revision history for File-chmod-Recursive
+Version History for File-chmod-Recursive
+Mithun Ayachit
 
-0.02    - Removed Check for regex ref (That should teach me to write tests)
-        - Return scalar value instead of a list, similar to chmod
-        - Updated _chmod_ links to point to perldoc
 
-0.01    Initial release.
+* * * * *
+
+0.03
+====
+
+-   Added more options for selective permissions
+-   Do not follow symlinks unless requested
+
+* * * * *
+
+0.02
+====
+
+-   Removed Check for regex ref (That should teach me to write tests)
+-   Return scalar value instead of a list, similar to chmod
+-   Updated chmod links to point to perldoc
+
+* * * * *
+
+0.01
+====
+
+-   Initial release
+
+* * * * *
