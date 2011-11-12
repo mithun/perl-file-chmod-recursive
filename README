@@ -3,12 +3,12 @@
 NAME
 ====
 
-File::chmod::Recursive
+File::chmod::Recursive - Run chmod recursively against directories
 
 DESCRIPTION
 ===========
 
-Run chmod recursively against directories
+Like File::chmod, but recursive with selective permissions
 
 SYNOPSIS
 ========
@@ -89,7 +89,7 @@ SEE ALSO
 
 -   chmod
 
--   Perl Monks thread on recursive perl chmod
+-   L
 
 AUTHOR
 ======

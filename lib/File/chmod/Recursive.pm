@@ -227,11 +227,11 @@ __END__
 
 =head1 NAME
 
-File::chmod::Recursive
+File::chmod::Recursive - Run chmod recursively against directories
 
 =head1 DESCRIPTION
 
-Run chmod recursively against directories
+Like L<File::chmod>, but recursive with selective permissions
 
 =head1 SYNOPSIS
 

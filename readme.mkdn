@@ -1,11 +1,11 @@
 -------------------------------------
 # NAME
 
-File::chmod::Recursive
+File::chmod::Recursive - Run chmod recursively against directories
 
 # DESCRIPTION
 
-Run chmod recursively against directories
+Like [File::chmod](http://search.cpan.org/perldoc?File::chmod), but recursive with selective permissions
 
 # SYNOPSIS
 
@@ -84,7 +84,8 @@ Please report any bugs or feature requests to
 
 -   [chmod](http://perldoc.perl.org/functions/chmod.html)
 
--   [Perl Monks thread on recursive perl chmod](http://www.perlmonks.org/?node_id=61745)
+-   L<Perl Monks thread on recursive perl
+chmod|http://www.perlmonks.org/?node_id=61745>
 
 # AUTHOR
 
