@@ -97,4 +97,5 @@ Copyright (c) 2011, Mithun Ayachit `<mithun@cpan.org>`. All rights
 reserved.
 
 This module is free software; you can redistribute it and/or modify it under
-the same terms as Perl itself. See [perlartistic](http://search.cpan.org/perldoc?perlartistic).-------------------------------------
+the same terms as Perl itself. See [perlartistic](http://search.cpan.org/perldoc?perlartistic).
+-------------------------------------

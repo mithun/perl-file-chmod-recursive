@@ -5,6 +5,7 @@ WriteMakefile
   'NAME' => 'File::chmod::Recursive',
   'VERSION_FROM' => 'lib/File/chmod/Recursive.pm',
   'PREREQ_PM' => {
+                   'File::chmod' => 0,
                    'Test::More' => 0,
                    'version' => 0
                  },

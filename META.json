@@ -24,6 +24,11 @@
          "requires" : {
             "Module::Build" : "0.38"
          }
+      },
+      "runtime" : {
+         "requires" : {
+            "File::chmod" : 0
+         }
       }
    },
    "provides" : {

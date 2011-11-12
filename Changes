@@ -4,6 +4,14 @@ Mithun Ayachit
 
 * * * * *
 
+0.04
+====
+
+-   Fixed dependency in Build.PL
+-   Match paths only once, i.e chmod a path only once
+
+* * * * *
+
 0.03
 ====
 
