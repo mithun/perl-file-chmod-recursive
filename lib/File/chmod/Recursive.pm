@@ -38,6 +38,7 @@ sub chmod_recursive {
         dirs        => q(),
         match_dirs  => {},
         match_files => {},
+        match       => {},
     };
 
     # Default _find_ settings
@@ -52,35 +53,12 @@ sub chmod_recursive {
 
         # Usage chmod_recursive({}, $dir);
 
-        # Both files and Directories are required
-        $mode->{files} = $in[0]->{files} || q();
-        $mode->{dirs}  = $in[0]->{dirs}  || q();
-
-        # Check for match
-        if ( $in[0]->{match} ) {
-            croak "Hash ref expected for _match_"
-                unless ( ref $in[0]->{match} eq 'HASH' );
-            $mode->{match_dirs} =
-                { %{ $mode->{match_dirs} }, $in[0]->{match} };
-            $mode->{match_files} =
-                { %{ $mode->{match_files} }, $in[0]->{match} };
-        } ## end if ( $in[0]->{match} )
-
-        # Check for match files
-        if ( $in[0]->{match_files} ) {
-            croak "Hash ref expected for _match_files_"
-                unless ( ref $in[0]->{match_files} eq 'HASH' );
-            $mode->{match_files} =
-                { %{ $mode->{match_files} }, $in[0]->{match} };
-        } ## end if ( $in[0]->{match_files...})
-
-        # Check for match dirs
-        if ( $in[0]->{match_dirs} ) {
-            croak "Hash ref expected for _match_dirs_"
-                unless ( ref $in[0]->{match_dirs} eq 'HASH' );
-            $mode->{match_dirs} =
-                { %{ $mode->{match_dirs} }, $in[0]->{match} };
-        } ## end if ( $in[0]->{match_dirs...})
+        # Get modes
+        $mode->{files}       = $in[0]->{files}       || q();
+        $mode->{dirs}        = $in[0]->{dirs}        || q();
+        $mode->{match_files} = $in[0]->{match_files} || {};
+        $mode->{match_dirs}  = $in[0]->{match_dirs}  || {};
+        $mode->{match}       = $in[0]->{match}       || {};
 
         # Check for _find_ settings
         if ( $in[0]->{follow_symlinks} ) {
@@ -104,9 +82,6 @@ sub chmod_recursive {
     # Get directory
     $dir = $in[1] || croak "Directory not provided";
     $dir = abs_path($dir);
-    if ( -l $dir ) {
-        $dir = readlink($dir) || croak "Failed to resolve symlink $dir";
-    }
     croak "$dir is not a directory" unless -d $dir;
 
     # Run chmod
@@ -130,13 +105,15 @@ sub chmod_recursive {
                         # Process files
                         if ( -f $path ) {
 
-                            # Process Matches
                             my $file_isa_match = 0;
+
+                            # Process file Matches
                             foreach my $match_re (
                                 keys %{ $mode->{match_files} } )
                             {
+                                next if $file_isa_match;
                                 next unless ( $path =~ m{$match_re} );
-                                $file_isa_match = 1;
+                                $file_isa_match = 1;  # Done matching
                                 if (
                                     chmod(
                                         $mode->{match_files}->{$match_re},
@@ -146,6 +123,23 @@ sub chmod_recursive {
                                 {
                                     push @updated, $path;
                                 } ## end if ( chmod( $mode->{match_files...}))
+                            } ## end foreach my $match_re ( keys...)
+
+                            # Process generic matches
+                            foreach my $match_re ( keys %{ $mode->{match} } )
+                            {
+                                next if $file_isa_match;
+                                next unless ( $path =~ m{$match_re} );
+                                $file_isa_match = 1;
+                                if (
+                                    chmod(
+                                        $mode->{match}->{$match_re},
+                                        $path
+                                    )
+                                    )
+                                {
+                                    push @updated, $path;
+                                } ## end if ( chmod( $mode->{match...}))
                             } ## end foreach my $match_re ( keys...)
 
                             # Process non-matches
@@ -168,13 +162,15 @@ sub chmod_recursive {
                         # Process Dirs
                         elsif ( -d $path ) {
 
-                            # Process Matches
                             my $dir_isa_match = 0;
+
+                            # Process Matches
                             foreach
                                 my $match_re ( keys %{ $mode->{match_dirs} } )
                             {
+                                next if $dir_isa_match;
                                 next unless ( $path =~ m{$match_re} );
-                                $dir_isa_match = 1;
+                                $dir_isa_match = 1;  # Done matching
                                 if (
                                     chmod(
                                         $mode->{match_dirs}->{$match_re},
@@ -184,6 +180,23 @@ sub chmod_recursive {
                                 {
                                     push @updated, $path;
                                 } ## end if ( chmod( $mode->{match_dirs...}))
+                            } ## end foreach my $match_re ( keys...)
+
+                            # Process generic matches
+                            foreach my $match_re ( keys %{ $mode->{match} } )
+                            {
+                                next if $dir_isa_match;
+                                next unless ( $path =~ m{$match_re} );
+                                $dir_isa_match = 1;  # Done matching
+                                if (
+                                    chmod(
+                                        $mode->{match}->{$match_re},
+                                        $path
+                                    )
+                                    )
+                                {
+                                    push @updated, $path;
+                                } ## end if ( chmod( $mode->{match...}))
                             } ## end foreach my $match_re ( keys...)
 
                             # Process non-matches
