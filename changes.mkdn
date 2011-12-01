@@ -2,9 +2,10 @@
 % Mithun Ayachit
 
 ---------------------
+
 # 0.05
 
-- Fixed File::Find imports
+- Fixed File-Find imports
 
 ---------------------
 
