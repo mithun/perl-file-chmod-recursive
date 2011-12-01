@@ -9,12 +9,12 @@ use Carp qw(croak carp);
 
 use Cwd qw(abs_path);
 use File::chmod qw(chmod);
-use File::Find qw(finddepth);
+use File::Find qw(find);
 
 #######################
 # VERSION
 #######################
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 #######################
 # EXPORT

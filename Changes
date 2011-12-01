@@ -2,7 +2,12 @@ Version History for File-chmod-Recursive
 Mithun Ayachit
 
 
-* * * * *
+  ---------------------
+  # 0.05
+
+  - Fixed File::Find
+  imports
+  ---------------------
 
 0.04
 ====

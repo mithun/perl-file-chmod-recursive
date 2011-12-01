@@ -34,7 +34,7 @@
    "provides" : {
       "File::chmod::Recursive" : {
          "file" : "lib/File/chmod/Recursive.pm",
-         "version" : "0.04"
+         "version" : "0.05"
       }
    },
    "release_status" : "stable",
@@ -50,5 +50,5 @@
          "url" : "git://github.com/mithun/perl-file-chmod-recursive.git"
       }
    },
-   "version" : "0.04"
+   "version" : "0.05"
 }
