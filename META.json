@@ -4,7 +4,15 @@
       "Mithun Ayachit <mithun@cpan.org>"
    ],
    "dynamic_config" : 1,
-   "generated_by" : "Module::Build version 0.38, CPAN::Meta::Converter version 2.112621",
+   "generated_by" : "Module::Build version 0.4, CPAN::Meta::Converter version 2.120630",
+   "keywords" : [
+      "chmod",
+      "stat",
+      "permissions",
+      "mode",
+      "file",
+      "recursive"
+   ],
    "license" : [
       "perl_5"
    ],
@@ -16,8 +24,8 @@
    "prereqs" : {
       "build" : {
          "requires" : {
-            "Test::More" : 0,
-            "version" : 0
+            "Test::More" : "0",
+            "version" : "0"
          }
       },
       "configure" : {
@@ -27,14 +35,14 @@
       },
       "runtime" : {
          "requires" : {
-            "File::chmod" : 0
+            "File::chmod" : "0.32"
          }
       }
    },
    "provides" : {
       "File::chmod::Recursive" : {
          "file" : "lib/File/chmod/Recursive.pm",
-         "version" : "0.05"
+         "version" : "0.06"
       }
    },
    "release_status" : "stable",
@@ -50,5 +58,5 @@
          "url" : "git://github.com/mithun/perl-file-chmod-recursive.git"
       }
    },
-   "version" : "0.05"
+   "version" : "0.06"
 }

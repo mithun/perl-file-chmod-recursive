@@ -8,7 +8,14 @@ build_requires:
 configure_requires:
   Module::Build: 0.38
 dynamic_config: 1
-generated_by: 'Module::Build version 0.38, CPAN::Meta::Converter version 2.112621'
+generated_by: 'Module::Build version 0.4, CPAN::Meta::Converter version 2.120630'
+keywords:
+  - chmod
+  - stat
+  - permissions
+  - mode
+  - file
+  - recursive
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -17,12 +24,12 @@ name: File-chmod-Recursive
 provides:
   File::chmod::Recursive:
     file: lib/File/chmod/Recursive.pm
-    version: 0.05
+    version: 0.06
 requires:
-  File::chmod: 0
+  File::chmod: 0.32
 resources:
   bugtracker: http://rt.cpan.org/Public/Dist/Display.html?Name=File-chmod-Recursive
   homepage: https://github.com/mithun/perl-file-chmod-recursive
   license: http://dev.perl.org/licenses/
   repository: git://github.com/mithun/perl-file-chmod-recursive.git
-version: 0.05
+version: 0.06

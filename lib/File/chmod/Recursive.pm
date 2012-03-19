@@ -340,7 +340,7 @@ valid -
 	    # Depth first tree walking. ON by default (default _find_ behavior)
 	    depth_first => 1,
 	}
-    
+
 In all cases the I<MODE> is whatever L<File::chmod> accepts.
 
 =item rchmod

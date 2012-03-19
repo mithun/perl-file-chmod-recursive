@@ -1,4 +1,3 @@
--------------------------------------
 # NAME
 
 File::chmod::Recursive - Run chmod recursively against directories
@@ -70,9 +69,12 @@ valid -
 
 In all cases the _MODE_ is whatever [File::chmod](http://search.cpan.org/perldoc?File::chmod) accepts.
 
-# BUGS AND LIMITATIONS
+- rchmod
+- chmodr
 
-No bugs have been reported.
+This is an alias for `chmod_recursive` and is exported only on request.
+
+# BUGS AND LIMITATIONS
 
 Please report any bugs or feature requests to
 `bug-file-chmod-recursive@rt.cpan.org`, or through the web interface at
@@ -84,8 +86,7 @@ Please report any bugs or feature requests to
 
 -   [chmod](http://perldoc.perl.org/functions/chmod.html)
 
--   L<Perl Monks thread on recursive perl
-chmod|http://www.perlmonks.org/?node_id=61745>
+-   [Perl Monks thread on recursive perl chmod](http://www.perlmonks.org/?node_id=61745)
 
 # AUTHOR
 
@@ -93,9 +94,8 @@ Mithun Ayachit  `<mithun@cpan.org>`
 
 # LICENCE AND COPYRIGHT
 
-Copyright (c) 2011, Mithun Ayachit `<mithun@cpan.org>`. All rights
+Copyright (c) 2012, Mithun Ayachit `<mithun@cpan.org>`. All rights
 reserved.
 
 This module is free software; you can redistribute it and/or modify it under
 the same terms as Perl itself. See [perlartistic](http://search.cpan.org/perldoc?perlartistic).
--------------------------------------

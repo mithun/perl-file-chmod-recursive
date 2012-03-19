@@ -1,109 +1,107 @@
-  -------------------------------------
-  # NAME
+NAME
+====
 
-  File::chmod::Recursive - Run chmod
-  recursively against directories
+File::chmod::Recursive - Run chmod recursively against directories
 
-  # DESCRIPTION
+DESCRIPTION
+===========
 
-  Like File::chmod, but recursive with
-  selective permissions
+Like File::chmod, but recursive with selective permissions
 
-  # SYNOPSIS
+SYNOPSIS
+========
 
-  use File::chmod::Recursive; # Exports
-  'chmod_recursive' by default
+    use File::chmod::Recursive;  # Exports 'chmod_recursive' by default
 
-  # Apply identical permissions to
-  everything # Similar to chmod -R
-  chmod_recursive( 0755,
-  '/path/to/directory' );
+    # Apply identical permissions to everything
+    #   Similar to chmod -R
+    chmod_recursive( 0755, '/path/to/directory' );
 
-  # Apply permissions selectively
-  chmod_recursive( { dirs => 0755, #
-  Mode for directories files => 0644, #
-  Mode for files
+    # Apply permissions selectively
+    chmod_recursive(
+        {
+            dirs  => 0755,       # Mode for directories
+            files => 0644,       # Mode for files
 
-  # Match both directories and files
-  match => { qr/.sh|.pl/ => 0755,
-  qr/.gnupg/ => 0600, },
+            # Match both directories and files
+            match => {
+                qr/\.sh|\.pl/ => 0755,
+                qr/\.gnupg/   => 0600,
+            },
 
-  # You can also match files or
-  directories selectively match_dirs =>
-  { qr//logs// => 0775, }, match_files
-  => { qr//bin/+$/ => 0755, }, },
-  '/path/to/directory' );
+            # You can also match files or directories selectively
+            match_dirs  => { qr/\/logs\//    => 0775, },
+            match_files => { qr/\/bin\/\S+$/ => 0755, },
+        },
+        '/path/to/directory'
+    );
 
-  # FUNCTIONS
+FUNCTIONS
+=========
 
-  - chmod_recursive(MODE, $path) -
-  chmod_recursive(%options, $path)
+-   chmod_recursive(MODE, $path)
+-   chmod_recursive(%options, $path)
 
-  This function accepts two parameters.
-  The first is either a MODE or an
-  options hashref. The second is the
-  directory to work on. It returns the
-  number of files successfully changed,
-  similar to chmod.
+This function accepts two parameters. The first is either a MODE or an
+options hashref. The second is the directory to work on. It returns the
+number of files successfully changed, similar to chmod.
 
-  When using a hashref for selective
-  permissions, the following options
-  are valid -
+When using a hashref for selective permissions, the following options
+are valid -
 
-  { dirs => MODE, # Default Mode for
-  directories files => MODE, # Default
-  Mode for files
+    {
+        dirs  => MODE,  # Default Mode for directories
+        files => MODE,  # Default Mode for files
 
-  # Match both directories and files
-  match => { qr// => MODE, },
+        # Match both directories and files
+        match => { qr/<some condition>/ => MODE, },
 
-  # Match files only match_files => {
-  qr// => MODE, },
+        # Match files only
+        match_files => { qr/<some condition>/ => MODE, },
 
-  # Match directories only match_dirs
-  => { qr// => MODE, },
+        # Match directories only
+        match_dirs => { qr/<some condition>/ => MODE, },
 
-  # Follow symlinks. OFF by default
-  follow_symlinks => 0,
+        # Follow symlinks. OFF by default
+        follow_symlinks => 0,
 
-  # Depth first tree walking. ON by
-  default (default find behavior)
-  depth_first => 1, }
+        # Depth first tree walking. ON by default (default _find_ behavior)
+        depth_first => 1,
+    }
 
-  In all cases the MODE is whatever
-  File::chmod accepts.
+In all cases the MODE is whatever File::chmod accepts.
 
-  # BUGS AND LIMITATIONS
+-   rchmod
+-   chmodr
 
-  No bugs have been reported.
+This is an alias for chmod_recursive and is exported only on request.
 
-  Please report any bugs or feature
-  requests to
-  bug-file-chmod-recursive@rt.cpan.org,
-  or through the web interface at
-  http://rt.cpan.org.
+BUGS AND LIMITATIONS
+====================
 
-  # SEE ALSO
+Please report any bugs or feature requests to
+bug-file-chmod-recursive@rt.cpan.org, or through the web interface at
+http://rt.cpan.org.
 
-  - File::chmod
+SEE ALSO
+========
 
-  - chmod
+-   File::chmod
 
-  - L
+-   chmod
 
-  # AUTHOR
+-   Perl Monks thread on recursive perl chmod
 
-  Mithun Ayachit <mithun@cpan.org>
+AUTHOR
+======
 
-  # LICENCE AND COPYRIGHT
+Mithun Ayachit <mithun@cpan.org>
 
-  Copyright (c) 2011, Mithun Ayachit
-  <mithun@cpan.org>. All rights
-  reserved.
+LICENCE AND COPYRIGHT
+=====================
 
-  This module is free software; you can
-  redistribute it and/or modify it
-  under the same terms as Perl itself.
-  See perlartistic.
-  -------------------------------------
+Copyright (c) 2012, Mithun Ayachit <mithun@cpan.org>. All rights
+reserved.
 
+This module is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself. See perlartistic.

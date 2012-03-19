@@ -2,14 +2,16 @@ Version History for File-chmod-Recursive
 Mithun Ayachit
 
 
-* * * * *
+0.06
+====
+
+-   Added a verbose option, similar to chmod -v
+-   Added an rchmod/chmodr alias for the lazy folks
 
 0.05
 ====
 
 -   Fixed File-Find imports
-
-* * * * *
 
 0.04
 ====
@@ -17,15 +19,11 @@ Mithun Ayachit
 -   Fixed dependency in Build.PL
 -   Match paths only once, i.e chmod a path only once
 
-* * * * *
-
 0.03
 ====
 
 -   Added more options for selective permissions
 -   Do not follow symlinks unless requested
-
-* * * * *
 
 0.02
 ====
@@ -33,8 +31,6 @@ Mithun Ayachit
 -   Removed Check for regex ref (That should teach me to write tests)
 -   Return scalar value instead of a list, similar to chmod
 -   Updated chmod links to point to perldoc
-
-* * * * *
 
 0.01
 ====
