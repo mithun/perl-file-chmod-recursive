@@ -8,21 +8,22 @@ use warnings FATAL => 'all';
 use Carp qw(croak carp);
 
 use Cwd qw(abs_path);
-use File::chmod qw(chmod);
 use File::Find qw(find);
+use File::chmod qw(chmod);
 
 #######################
 # VERSION
 #######################
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 #######################
 # EXPORT
 #######################
 use base qw(Exporter);
-our (@EXPORT);
+our ( @EXPORT, @EXPORT_OK );
 
-@EXPORT = qw(chmod_recursive);
+@EXPORT    = qw(chmod_recursive);
+@EXPORT_OK = qw(chmod_recursive rchmod chmodr);
 
 #######################
 # CHMOD RECURSIVE
@@ -47,6 +48,9 @@ sub chmod_recursive {
         no_chdir => 1,  # Do not chdir
     );
 
+    # Verbose mode
+    my $verbose = 0;
+
     # Check Input
     my $dir;
     if ( ref $in[0] eq 'HASH' ) {
@@ -68,6 +72,10 @@ sub chmod_recursive {
         if ( $in[0]->{depth_first} ) {
             $find_settings{bydepth} = 1;
         }
+
+        # Verbose on/off
+        $verbose = $in[0]->{verbose} || 0;
+
     } ## end if ( ref $in[0] eq 'HASH')
 
     else {
@@ -122,6 +130,9 @@ sub chmod_recursive {
                                     )
                                 {
                                     push @updated, $path;
+                                    warn
+                                        "chmod_recursive: $path -> $mode->{match_files}->{$match_re}\n"
+                                        if $verbose;
                                 } ## end if ( chmod( $mode->{match_files...}))
                             } ## end foreach my $match_re ( keys...)
 
@@ -139,6 +150,9 @@ sub chmod_recursive {
                                     )
                                 {
                                     push @updated, $path;
+                                    warn
+                                        "chmod_recursive: $path -> $mode->{match}->{$match_re}\n"
+                                        if $verbose;
                                 } ## end if ( chmod( $mode->{match...}))
                             } ## end foreach my $match_re ( keys...)
 
@@ -156,6 +170,9 @@ sub chmod_recursive {
                                 )
                             {
                                 push @updated, $path;
+                                warn
+                                    "chmod_recursive: $path -> $mode->{files}\n"
+                                    if $verbose;
                             } ## end if ( ( not $file_isa_match...))
                         } ## end if ( -f $path )
 
@@ -179,6 +196,9 @@ sub chmod_recursive {
                                     )
                                 {
                                     push @updated, $path;
+                                    warn
+                                        "chmod_recursive: $path -> $mode->{match_dirs}->{$match_re}\n"
+                                        if $verbose;
                                 } ## end if ( chmod( $mode->{match_dirs...}))
                             } ## end foreach my $match_re ( keys...)
 
@@ -196,6 +216,9 @@ sub chmod_recursive {
                                     )
                                 {
                                     push @updated, $path;
+                                    warn
+                                        "chmod_recursive: $path -> $mode->{match}->{$match_re}\n"
+                                        if $verbose;
                                 } ## end if ( chmod( $mode->{match...}))
                             } ## end foreach my $match_re ( keys...)
 
@@ -213,6 +236,9 @@ sub chmod_recursive {
                                 )
                             {
                                 push @updated, $path;
+                                warn
+                                    "chmod_recursive: $path -> $mode->{dirs}\n"
+                                    if $verbose;
                             } ## end if ( ( not $dir_isa_match...))
                         } ## end elsif ( -d $path )
 
@@ -227,6 +253,12 @@ sub chmod_recursive {
     # Done
     return scalar @updated;
 } ## end sub chmod_recursive
+
+#######################
+# ALIASES
+#######################
+sub rchmod { return chmod_recursive(@_); }
+sub chmodr { return chmod_recursive(@_); }
 
 #######################
 1;
@@ -311,11 +343,15 @@ valid -
     
 In all cases the I<MODE> is whatever L<File::chmod> accepts.
 
+=item rchmod
+
+=item chmodr
+
+This is an alias for C<chmod_recursive> and is exported only on request.
+
 =back
 
 =head1 BUGS AND LIMITATIONS
-
-No bugs have been reported.
 
 Please report any bugs or feature requests to
 C<bug-file-chmod-recursive@rt.cpan.org>, or through the web interface at
@@ -336,7 +372,7 @@ Mithun Ayachit  C<< <mithun@cpan.org> >>
 
 =head1 LICENCE AND COPYRIGHT
 
-Copyright (c) 2011, Mithun Ayachit C<< <mithun@cpan.org> >>. All rights
+Copyright (c) 2012, Mithun Ayachit C<< <mithun@cpan.org> >>. All rights
 reserved.
 
 This module is free software; you can redistribute it and/or modify it under

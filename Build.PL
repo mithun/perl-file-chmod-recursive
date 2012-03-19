@@ -23,11 +23,12 @@ my $builder = Module::Build->new(
         'Test::More' => 0,
         'version'    => 0,
     },
-    requires           => { 'File::chmod' => 0, },
+    requires           => { 'File::chmod' => '0.32', },
     add_to_cleanup     => ['File-chmod-Recursive-*'],
     create_license     => 1,
     create_makefile_pl => 'traditional',
     meta_merge         => {
+        keywords  => [qw(chmod stat permissions mode file recursive)],
         resources => {
             bugtracker =>
                 'http://rt.cpan.org/Public/Dist/Display.html?Name=File-chmod-Recursive',
