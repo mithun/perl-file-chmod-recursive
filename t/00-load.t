@@ -12,7 +12,7 @@ local $| = 1;
 
 # Test _use_
 use_ok('File::chmod::Recursive')
-    || BAIL_OUT('Failed to load File::chmod::Recursive');
+  || BAIL_OUT('Failed to load File::chmod::Recursive');
 
 # Done
 done_testing();

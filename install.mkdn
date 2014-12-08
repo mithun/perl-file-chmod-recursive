@@ -1,21 +1,27 @@
-% Installing File-chmod-Recursive
-% Mithun Ayachit
+---
+author:
+- Mithun Ayachit
+title: 'Installing File-chmod-Recursive'
+...
 
 # Distribution page
 
-The latest and all previous releases for File-chmod-Recursive can be downloaded from https://metacpan.org/release/File-chmod-Recursive
+The latest and all previous releases for File-chmod-Recursive can be
+downloaded from https://metacpan.org/release/File-chmod-Recursive
 
 # Install using `cpanm`
 
-File-chmod-Recursive can be installed with `cpanm` using the following command
+File-chmod-Recursive can be installed with `cpanm` using the following
+command
 
-	cpanm .
+    cpanm .
 
 # Install using `Module::Build`
 
-File-chmod-Recursive can be installed with `Module::Build` using the following commands
+File-chmod-Recursive can be installed with `Module::Build` using the
+following commands
 
-	perl ./Build.PL
-	./Build
-	./Build test
-	./Build install
+    perl ./Build.PL
+    ./Build
+    ./Build test
+    ./Build install

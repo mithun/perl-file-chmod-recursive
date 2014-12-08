@@ -14,7 +14,7 @@ use File::chmod qw(chmod);
 #######################
 # VERSION
 #######################
-our $VERSION = '0.06';
+our $VERSION = '0.6.1';
 
 #######################
 # EXPORT
@@ -68,7 +68,7 @@ sub chmod_recursive {
         if ( $in[0]->{follow_symlinks} ) {
             $find_settings{follow}      = 1;  # Follow Symlinks
             $find_settings{follow_skip} = 2;  # Skip duplicates
-        }
+        } ## end if ( $in[0]->{follow_symlinks...})
         if ( $in[0]->{depth_first} ) {
             $find_settings{bydepth} = 1;
         }
@@ -116,43 +116,43 @@ sub chmod_recursive {
                             my $file_isa_match = 0;
 
                             # Process file Matches
-                            foreach my $match_re (
-                                keys %{ $mode->{match_files} } )
+                            foreach
+                              my $match_re ( keys %{ $mode->{match_files} } )
                             {
-                                next if $file_isa_match;
-                                next unless ( $path =~ m{$match_re} );
+                              next if $file_isa_match;
+                              next unless ( $path =~ m{$match_re} );
                                 $file_isa_match = 1;  # Done matching
                                 if (
                                     chmod(
                                         $mode->{match_files}->{$match_re},
                                         $path
                                     )
-                                    )
+                                  )
                                 {
                                     push @updated, $path;
                                     warn
-                                        "chmod_recursive: $path -> $mode->{match_files}->{$match_re}\n"
-                                        if $verbose;
+                                      "chmod_recursive: $path -> $mode->{match_files}->{$match_re}\n"
+                                      if $verbose;
                                 } ## end if ( chmod( $mode->{match_files...}))
                             } ## end foreach my $match_re ( keys...)
 
                             # Process generic matches
                             foreach my $match_re ( keys %{ $mode->{match} } )
                             {
-                                next if $file_isa_match;
-                                next unless ( $path =~ m{$match_re} );
+                              next if $file_isa_match;
+                              next unless ( $path =~ m{$match_re} );
                                 $file_isa_match = 1;
                                 if (
                                     chmod(
                                         $mode->{match}->{$match_re},
                                         $path
                                     )
-                                    )
+                                  )
                                 {
                                     push @updated, $path;
                                     warn
-                                        "chmod_recursive: $path -> $mode->{match}->{$match_re}\n"
-                                        if $verbose;
+                                      "chmod_recursive: $path -> $mode->{match}->{$match_re}\n"
+                                      if $verbose;
                                 } ## end if ( chmod( $mode->{match...}))
                             } ## end foreach my $match_re ( keys...)
 
@@ -167,12 +167,12 @@ sub chmod_recursive {
 
                                 # And succesfully updated
                                 and ( chmod( $mode->{files}, $path ) )
-                                )
+                              )
                             {
                                 push @updated, $path;
                                 warn
-                                    "chmod_recursive: $path -> $mode->{files}\n"
-                                    if $verbose;
+                                  "chmod_recursive: $path -> $mode->{files}\n"
+                                  if $verbose;
                             } ## end if ( ( not $file_isa_match...))
                         } ## end if ( -f $path )
 
@@ -183,42 +183,42 @@ sub chmod_recursive {
 
                             # Process Matches
                             foreach
-                                my $match_re ( keys %{ $mode->{match_dirs} } )
+                              my $match_re ( keys %{ $mode->{match_dirs} } )
                             {
-                                next if $dir_isa_match;
-                                next unless ( $path =~ m{$match_re} );
+                              next if $dir_isa_match;
+                              next unless ( $path =~ m{$match_re} );
                                 $dir_isa_match = 1;  # Done matching
                                 if (
                                     chmod(
                                         $mode->{match_dirs}->{$match_re},
                                         $path
                                     )
-                                    )
+                                  )
                                 {
                                     push @updated, $path;
                                     warn
-                                        "chmod_recursive: $path -> $mode->{match_dirs}->{$match_re}\n"
-                                        if $verbose;
+                                      "chmod_recursive: $path -> $mode->{match_dirs}->{$match_re}\n"
+                                      if $verbose;
                                 } ## end if ( chmod( $mode->{match_dirs...}))
                             } ## end foreach my $match_re ( keys...)
 
                             # Process generic matches
                             foreach my $match_re ( keys %{ $mode->{match} } )
                             {
-                                next if $dir_isa_match;
-                                next unless ( $path =~ m{$match_re} );
+                              next if $dir_isa_match;
+                              next unless ( $path =~ m{$match_re} );
                                 $dir_isa_match = 1;  # Done matching
                                 if (
                                     chmod(
                                         $mode->{match}->{$match_re},
                                         $path
                                     )
-                                    )
+                                  )
                                 {
                                     push @updated, $path;
                                     warn
-                                        "chmod_recursive: $path -> $mode->{match}->{$match_re}\n"
-                                        if $verbose;
+                                      "chmod_recursive: $path -> $mode->{match}->{$match_re}\n"
+                                      if $verbose;
                                 } ## end if ( chmod( $mode->{match...}))
                             } ## end foreach my $match_re ( keys...)
 
@@ -233,12 +233,12 @@ sub chmod_recursive {
 
                                 # And succesfully updated
                                 and ( chmod( $mode->{dirs}, $path ) )
-                                )
+                              )
                             {
                                 push @updated, $path;
                                 warn
-                                    "chmod_recursive: $path -> $mode->{dirs}\n"
-                                    if $verbose;
+                                  "chmod_recursive: $path -> $mode->{dirs}\n"
+                                  if $verbose;
                             } ## end if ( ( not $dir_isa_match...))
                         } ## end elsif ( -d $path )
 
@@ -251,7 +251,7 @@ sub chmod_recursive {
     }
 
     # Done
-    return scalar @updated;
+  return scalar @updated;
 } ## end sub chmod_recursive
 
 #######################
@@ -280,30 +280,30 @@ Like L<File::chmod>, but recursive with selective permissions
 
 =head1 SYNOPSIS
 
-	use File::chmod::Recursive;  # Exports 'chmod_recursive' by default
+    use File::chmod::Recursive;  # Exports 'chmod_recursive' by default
 
-	# Apply identical permissions to everything
-	#   Similar to chmod -R
-	chmod_recursive( 0755, '/path/to/directory' );
+    # Apply identical permissions to everything
+    #   Similar to chmod -R
+    chmod_recursive( 0755, '/path/to/directory' );
 
-	# Apply permissions selectively
-	chmod_recursive(
-	    {
-	        dirs  => 0755,       # Mode for directories
-	        files => 0644,       # Mode for files
+    # Apply permissions selectively
+    chmod_recursive(
+        {
+            dirs  => 0755,       # Mode for directories
+            files => 0644,       # Mode for files
 
-	        # Match both directories and files
-	        match => {
-	            qr/\.sh|\.pl/ => 0755,
-	            qr/\.gnupg/   => 0600,
-	        },
+            # Match both directories and files
+            match => {
+                qr/\.sh|\.pl/ => 0755,
+                qr/\.gnupg/   => 0600,
+            },
 
-	        # You can also match files or directories selectively
-	        match_dirs  => { qr/\/logs\//    => 0775, },
-	        match_files => { qr/\/bin\/\S+$/ => 0755, },
-	    },
-	    '/path/to/directory'
-	);
+            # You can also match files or directories selectively
+            match_dirs  => { qr/\/logs\//    => 0775, },
+            match_files => { qr/\/bin\/\S+$/ => 0755, },
+        },
+        '/path/to/directory'
+    );
 
 =head1 FUNCTIONS
 
@@ -313,33 +313,33 @@ Like L<File::chmod>, but recursive with selective permissions
 
 =item chmod_recursive(\%options, $path)
 
-This function accepts two parameters. The first is either a I<MODE> or an
-I<options hashref>. The second is the directory to work on. It returns the
-number of files successfully changed, similar to
+This function accepts two parameters. The first is either a I<MODE> or
+an I<options hashref>. The second is the directory to work on. It
+returns the number of files successfully changed, similar to
 L<chmod|http://perldoc.perl.org/functions/chmod.html>.
 
-When using a I<hashref> for selective permissions, the following options are
-valid -
+When using a I<hashref> for selective permissions, the following
+options are valid -
 
-	{
-	    dirs  => MODE,  # Default Mode for directories
-	    files => MODE,  # Default Mode for files
+    {
+        dirs  => MODE,  # Default Mode for directories
+        files => MODE,  # Default Mode for files
 
-	    # Match both directories and files
-	    match => { qr/<some condition>/ => MODE, },
+        # Match both directories and files
+        match => { qr/<some condition>/ => MODE, },
 
-	    # Match files only
-	    match_files => { qr/<some condition>/ => MODE, },
+        # Match files only
+        match_files => { qr/<some condition>/ => MODE, },
 
-	    # Match directories only
-	    match_dirs => { qr/<some condition>/ => MODE, },
+        # Match directories only
+        match_dirs => { qr/<some condition>/ => MODE, },
 
-	    # Follow symlinks. OFF by default
-	    follow_symlinks => 0,
+        # Follow symlinks. OFF by default
+        follow_symlinks => 0,
 
-	    # Depth first tree walking. ON by default (default _find_ behavior)
-	    depth_first => 1,
-	}
+        # Depth first tree walking. ON by default (default _find_ behavior)
+        depth_first => 1,
+    }
 
 In all cases the I<MODE> is whatever L<File::chmod> accepts.
 
@@ -347,15 +347,15 @@ In all cases the I<MODE> is whatever L<File::chmod> accepts.
 
 =item chmodr
 
-This is an alias for C<chmod_recursive> and is exported only on request.
+This is an alias for C<chmod_recursive> and is exported only on
+request.
 
 =back
 
 =head1 BUGS AND LIMITATIONS
 
-Please report any bugs or feature requests to
-C<bug-file-chmod-recursive@rt.cpan.org>, or through the web interface at
-L<http://rt.cpan.org>.
+Please report any bugs or feature requests at
+L<https://github.com/mithun/perl-file-chmod-recursive/issues>.
 
 =head1 SEE ALSO
 
@@ -372,10 +372,10 @@ Mithun Ayachit  C<< <mithun@cpan.org> >>
 
 =head1 LICENCE AND COPYRIGHT
 
-Copyright (c) 2012, Mithun Ayachit C<< <mithun@cpan.org> >>. All rights
+Copyright (c) 2014, Mithun Ayachit C<< <mithun@cpan.org> >>. All rights
 reserved.
 
-This module is free software; you can redistribute it and/or modify it under
-the same terms as Perl itself. See L<perlartistic>.
+This module is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself. See L<perlartistic>.
 
 =cut

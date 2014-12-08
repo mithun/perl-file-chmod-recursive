@@ -23,7 +23,11 @@ my $builder = Module::Build->new(
         'Test::More' => 0,
         'version'    => 0,
     },
-    requires           => { 'File::chmod' => '0.32', },
+    requires => {
+        'File::chmod' => '0.32',
+        'File::Find'  => 0,
+        'Cwd'         => 0,
+    },
     add_to_cleanup     => ['File-chmod-Recursive-*'],
     create_license     => 1,
     create_makefile_pl => 'traditional',
@@ -31,9 +35,9 @@ my $builder = Module::Build->new(
         keywords  => [qw(chmod stat permissions mode file recursive)],
         resources => {
             bugtracker =>
-                'http://rt.cpan.org/Public/Dist/Display.html?Name=File-chmod-Recursive',
+              'https://github.com/mithun/perl-file-chmod-recursive/issues',
             repository =>
-                'git://github.com/mithun/perl-file-chmod-recursive.git',
+              'git://github.com/mithun/perl-file-chmod-recursive.git',
             homepage => 'https://github.com/mithun/perl-file-chmod-recursive',
         },
     },
