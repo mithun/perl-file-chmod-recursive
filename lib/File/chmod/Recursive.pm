@@ -14,7 +14,7 @@ use File::chmod qw(chmod);
 #######################
 # VERSION
 #######################
-our $VERSION = '0.6.1';
+our $VERSION = '1.0.1';
 
 #######################
 # EXPORT
