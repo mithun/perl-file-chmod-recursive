@@ -4,7 +4,7 @@ package File::chmod::Recursive;
 # LOAD MODULES
 #######################
 use strict;
-use warnings FATAL => 'all';
+use warnings;
 use Carp qw(croak carp);
 
 use Cwd qw(abs_path);
@@ -14,7 +14,7 @@ use File::chmod qw(chmod);
 #######################
 # VERSION
 #######################
-our $VERSION = '1.0.1';
+our $VERSION = '1.0.2';
 
 #######################
 # EXPORT
@@ -98,6 +98,11 @@ sub chmod_recursive {
 
         # Turn off warnings for file find
         no warnings 'File::Find';
+
+        # Turn off UMASK for File::chmod
+        # See: https://github.com/xenoterracide/File-chmod/issues/5
+        local $File::chmod::UMASK = 0;
+
         find(
             {
                 %find_settings,

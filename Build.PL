@@ -24,7 +24,7 @@ my $builder = Module::Build->new(
         'version'    => 0,
     },
     requires => {
-        'File::chmod' => '0.32',
+        'File::chmod' => '0.42',
         'File::Find'  => 0,
         'Cwd'         => 0,
     },

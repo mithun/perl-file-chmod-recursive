@@ -4,6 +4,11 @@ author:
 title: 'Version History for File-chmod-Recursive'
 ...
 
+# 1.0.2
+
+- [#1] do not use fatal warnings
+- Fix the reason for warnings on File::chmod
+
 # 1.0.1
 
 -   Bump version to allow change in version number strategy
