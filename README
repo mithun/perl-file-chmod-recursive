@@ -10,7 +10,7 @@ File::chmod::Recursive - Run chmod recursively against directories
 DESCRIPTION
 
 
-Like File::chmod, but recursive with selective permissions
+Like [File::chmod][], but recursive with selective permissions
 
 
 
@@ -52,7 +52,8 @@ FUNCTIONS
 
     This function accepts two parameters. The first is either a _MODE_
     or an _options hashref_. The second is the directory to work on. It
-    returns the number of files successfully changed, similar to chmod.
+    returns the number of files successfully changed, similar to
+    [chmod][].
 
     When using a _hashref_ for selective permissions, the following
     options are valid -
@@ -77,7 +78,7 @@ FUNCTIONS
             depth_first => 1,
         }
 
-    In all cases the _MODE_ is whatever File::chmod accepts.
+    In all cases the _MODE_ is whatever [File::chmod][] accepts.
 
 -   rchmod
 -   chmodr
@@ -98,11 +99,11 @@ https://github.com/mithun/perl-file-chmod-recursive/issues.
 SEE ALSO
 
 
-- File::chmod
+- [File::chmod][]
 
-- chmod
+- [chmod][]
 
-- Perl Monks thread on recursive perl chmod
+- [Perl Monks thread on recursive perl chmod][]
 
 
 
@@ -120,4 +121,9 @@ Copyright (c) 2014, Mithun Ayachit <mithun@cpan.org>. All rights
 reserved.
 
 This module is free software; you can redistribute it and/or modify it
-under the same terms as Perl itself. See perlartistic.
+under the same terms as Perl itself. See [perlartistic][].
+
+  [File::chmod]: https://metacpan.org/pod/File::chmod
+  [chmod]: http://perldoc.perl.org/functions/chmod.html
+  [Perl Monks thread on recursive perl chmod]: http://www.perlmonks.org/?node_id=61745
+  [perlartistic]: https://metacpan.org/pod/perlartistic
