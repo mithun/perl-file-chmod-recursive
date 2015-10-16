@@ -136,7 +136,7 @@ sub chmod_recursive {
                                 {
                                     push @updated, $path;
                                     warn
-                                      "chmod_recursive: $path -> $mode->{match_files}->{$match_re}\n"
+                                      "chmod_recursive: $path -> " . (sprintf "%#o", $mode->{match_files}->{$match_re}) . "\n"
                                       if $verbose;
                                 } ## end if ( chmod( $mode->{match_files...}))
                             } ## end foreach my $match_re ( keys...)
@@ -156,7 +156,7 @@ sub chmod_recursive {
                                 {
                                     push @updated, $path;
                                     warn
-                                      "chmod_recursive: $path -> $mode->{match}->{$match_re}\n"
+                                      "chmod_recursive: $path -> " . (sprintf "%#o", $mode->{match}->{$match_re}) . "\n"
                                       if $verbose;
                                 } ## end if ( chmod( $mode->{match...}))
                             } ## end foreach my $match_re ( keys...)
@@ -176,7 +176,7 @@ sub chmod_recursive {
                             {
                                 push @updated, $path;
                                 warn
-                                  "chmod_recursive: $path -> $mode->{files}\n"
+                                  "chmod_recursive: $path -> " . (sprintf "%#o", $mode->{files}) . "\n"
                                   if $verbose;
                             } ## end if ( ( not $file_isa_match...))
                         } ## end if ( -f $path )
@@ -202,7 +202,7 @@ sub chmod_recursive {
                                 {
                                     push @updated, $path;
                                     warn
-                                      "chmod_recursive: $path -> $mode->{match_dirs}->{$match_re}\n"
+                                      "chmod_recursive: $path -> " . (sprintf "%#o", $mode->{match_dirs}->{$match_re}) . "\n"
                                       if $verbose;
                                 } ## end if ( chmod( $mode->{match_dirs...}))
                             } ## end foreach my $match_re ( keys...)
@@ -222,7 +222,7 @@ sub chmod_recursive {
                                 {
                                     push @updated, $path;
                                     warn
-                                      "chmod_recursive: $path -> $mode->{match}->{$match_re}\n"
+                                      "chmod_recursive: $path -> " . (sprintf "%#o", $mode->{match}->{$match_re}) . "\n"
                                       if $verbose;
                                 } ## end if ( chmod( $mode->{match...}))
                             } ## end foreach my $match_re ( keys...)
@@ -242,7 +242,7 @@ sub chmod_recursive {
                             {
                                 push @updated, $path;
                                 warn
-                                  "chmod_recursive: $path -> $mode->{dirs}\n"
+                                  "chmod_recursive: $path -> " . (sprintf "%#o", $mode->{dirs}) . "\n"
                                   if $verbose;
                             } ## end if ( ( not $dir_isa_match...))
                         } ## end elsif ( -d $path )
