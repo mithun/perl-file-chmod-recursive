@@ -34,4 +34,4 @@ resources:
   homepage: https://github.com/mithun/perl-file-chmod-recursive
   license: http://dev.perl.org/licenses/
   repository: git://github.com/mithun/perl-file-chmod-recursive.git
-version: v1.0.2
+version: v1.0.3
