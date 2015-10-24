@@ -6,7 +6,7 @@ title: 'Version History for File-chmod-Recursive'
 
 # 1.0.3
 
-- Merged #2 - print out mode as octal when in verbose mode
+-   Merged \#2 - print out mode as octal when in verbose mode
 
 # 1.0.2
 
